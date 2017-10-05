@@ -1,7 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <fcntl.h>
-#include "libft.h"
+#include "../includes/libft.h"
 #include "fillit.h"
 
 void	print_error(char *msg)
@@ -18,8 +18,12 @@ void	print_error(char *msg)
 
 int		main(int argc, char *argv[])
 {
-	int fd;
+	int		i;
+	int 	fd;
+	char	c;
 	//t_map map;
+	i = 0;
+	t_fig	*out;
 
 	if(argc !=2)
 	{
@@ -29,7 +33,9 @@ int		main(int argc, char *argv[])
 	fd = open(argv[1], O_RDONLY);
 	if(fd == -1)
 		print_error("An error occured during opening of the file");
+	t_fig = read_map(fd, i, c, out);
 	//ft_memset(&map, 0, sizeof(map));
+	ft_readmap();
 	//parse(fd, &map);
 	close(fd);
 	//solve(&map);
