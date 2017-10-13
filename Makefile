@@ -11,6 +11,8 @@ INCS			=	-I $(LIB_PATH)/$(INC_DIR) -I $(INC_DIR)
 
 SRC_DIR			=	src
 SRC_BASE		=	main.c			\
+					read.c 			\
+					parse.c
 
 OBJ_DIR			=	obj
 

@@ -1,4 +1,4 @@
-#include "fillit.h"
+#include "../includes/fillit.h"
 
 int		check_figures(char *figure)
 {
@@ -22,6 +22,21 @@ int		check_figures(char *figure)
 	return (0);
 }
 
+int		check_empty(char *str)
+{
+
+	int	i;
+	if(!str)
+		return(1);
+	i = 0;
+	while(str[i])
+	{
+		if(str[i++] == '#')
+			return(0);
+	}
+	return(1);
+}
+
 void	trim_map(char *buff)
 {
 	char	**split;
@@ -30,15 +45,17 @@ void	trim_map(char *buff)
 
 	i = 0;
 	split = ft_strsplit(buff, '\n');
-	while (is_empty(split[i]) && i < 4)
+
+	while (check_empty(split[i]) && i < 4)
 		i++;
 	end = i;
-	while (!is_empty(split[end]) && end < 4)
+	
+	while (!check_empty(split[end]) && end < 4)
 		end++;
 	ft_strclr(buff);
 	while (i < end)
 	{
-		ft_strcat(buff, (mk_tmp(split[i], fn_start(split), fn_last(split))));
+		ft_strcat(buff, (mem_line(split[i], fn_start(split), fn_last(split))));
 		i++;
 	}
 }
@@ -49,9 +66,11 @@ int		map_validation(char *buff, int size)
 	int		j;
 
 	i = 0;
+
+
 	while (i < size)
-	{
-		ch = 0;
+	{	
+		j = 0 ;
 		while (buff[i] == '#' || buff[i] == '.')
 		{
 			i++;
@@ -64,14 +83,16 @@ int		map_validation(char *buff, int size)
 	return (1);
 }
 
-void	check_map(t_fig **out, char buff[21], char c)
+void	check_map(t_fig **out, char buff[21], char ch)
 {
-	char	**split;
-
+	//char	**split;
+	ch = 0;
+	out = NULL;
 	if (!map_validation(buff, 20))
 		print_error("invalid map");
 	trim_map(buff);
-	if (check_figures(buff))
+	ft_putendl(buff);
+	/*if (check_figures(buff))
 	{
 		split = ft_strsplit(buff, '\n');
 		//set_chars(split, ch);
@@ -79,6 +100,7 @@ void	check_map(t_fig **out, char buff[21], char c)
 	}
 	else
 		ft_error();
+		*/
 }
 
 t_fig	*read_map(int fd, int i, char ch, t_fig *out)
@@ -87,7 +109,7 @@ t_fig	*read_map(int fd, int i, char ch, t_fig *out)
 	char buff[21];
 
 	j = 0;
-	c = 'A';
+	ch = 'A';
 	while(1 && (j != 1))
 	{
 		if ((i = read(fd, buff, 21)) == 21)
@@ -99,7 +121,7 @@ t_fig	*read_map(int fd, int i, char ch, t_fig *out)
 				break ;
 		}
 		else
-			ft_error();
+			print_error("Map check error");
 	}
 	return (out);
 }
